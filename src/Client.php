@@ -89,8 +89,8 @@ class Client extends AbstractClient {
             'groupCoupon' => $groupCoupon,
             'strictUsages' => $strictUsages,
             'validEvents' => $validEvents,
-            'validFrom' => $validFrom,
-            'validTo' => $validTo
+            'validFrom' => $validFrom ? $validFrom->format('Y-m-d H:i:s') : null,
+            'validTo' => $validTo ? $validTo->format('Y-m-d H:i:s') : null
         ];
 
         $response = $this->request('/backend/subscription/coupon/create', $data);
