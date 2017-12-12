@@ -1,0 +1,27 @@
+{
+	"name":"ixolit/dislo-backend-sdk",
+	"license": "MIT",
+	"type": "library",
+	"description": "Client library for backend Dislo APIs",
+	"autoload": {
+		"psr-4": {
+			"Ixolit\\Dislo\\Backend\\": "./src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Ixolit\\Dislo\\Backend\\": "./tests"
+		}
+	},
+	"require": {
+        "ixolit/dislo-sdk": "1.0.*"
+	},
+	"require-dev": {
+        "ixolit/dislo-sdk-http-guzzle": "1.0.*",
+		"phpunit/phpunit": "4.8.*",
+        "phpmd/phpmd": "2.4.*",
+        "phing/phing": "2.14.*",
+        "apigen/apigen": "4.1.*"
+	},
+	"minimum-stability": "stable"
+}
