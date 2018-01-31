@@ -2,10 +2,10 @@
 namespace Ixolit\Dislo\Backend\Response;
 
 /**
- * Class CouponModifyResponse
+ * Class CouponCreateResponse
  *
  * @package Ixolit\Dislo\Backend\Response
  */
-class CouponModifyResponse extends CouponGetResponse {
+class CouponCreateResponse extends CouponGetResponse {
 
 }

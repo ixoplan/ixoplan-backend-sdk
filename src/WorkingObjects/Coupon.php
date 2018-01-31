@@ -37,6 +37,9 @@ class Coupon {
     /** @var \DateTime */
     protected $modifiedAt;
 
+    /** @var string[] */
+    protected $validPlans;
+
     /** @var \DateTime|null */
     protected $validFrom;
 
@@ -83,10 +86,11 @@ class Coupon {
      * @param string $type
      * @param array $typeParameters
      * @param bool $groupCoupon
+     * @param string[] $validPlans
      */
     public function __construct($id, $code, $description, $enabled, $superseded, \DateTime $createdAt,
             \DateTime $modifiedAt, \DateTime $validFrom = null, \DateTime $validTo = null, $maxUsages,
-            $maxPeriods, $strictUsages, array $validEvents, $type, array $typeParameters, $groupCoupon) {
+            $maxPeriods, $strictUsages, array $validEvents, $type, array $typeParameters, $groupCoupon, $validPlans) {
 
         $this->id = $id;
         $this->code = $code;
@@ -104,6 +108,7 @@ class Coupon {
         $this->type = $type;
         $this->typeParameters = $typeParameters;
         $this->groupCoupon = $groupCoupon;
+        $this->validPlans = $validPlans;
     }
 
     /**
@@ -363,6 +368,22 @@ class Coupon {
     }
 
     /**
+     * @return string[]
+     */
+    public function getValidPlans() {
+        return $this->validPlans;
+    }
+
+    /**
+     * @param string[] $validPlans
+     * @return Coupon
+     */
+    public function setValidPlans($validPlans) {
+        $this->validPlans = $validPlans;
+        return $this;
+    }
+
+    /**
      * @param array $response
      *
      * @return self
@@ -384,7 +405,8 @@ class Coupon {
             $response['validEvents'],
             $response['type'],
             $response['typeParameters'],
-            $response['groupCoupon']
+            $response['groupCoupon'],
+            $response['validPlans']
         );
     }
 
@@ -408,7 +430,8 @@ class Coupon {
             'validEvents' => $this->validEvents,
             'type' => $this->type,
             'typeParameters' => $this->typeParameters,
-            'groupCoupon' => $this->groupCoupon
+            'groupCoupon' => $this->groupCoupon,
+            'validPlans' => $this->validPlans
         ];
     }
 }

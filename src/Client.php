@@ -4,6 +4,7 @@
 namespace Ixolit\Dislo\Backend;
 
 use Ixolit\Dislo\AbstractClient;
+use Ixolit\Dislo\Backend\Response\CouponCreateResponse;
 use Ixolit\Dislo\Backend\Response\CouponGetResponse;
 use Ixolit\Dislo\Backend\Response\CouponListResponse;
 use Ixolit\Dislo\Backend\Response\CouponModifyResponse;
@@ -72,11 +73,13 @@ class Client extends AbstractClient {
      * @param string[] $validEvents Coupon::COUPON_EVENT_*
      * @param \DateTime|null $validFrom
      * @param \DateTime|null $validTo
+     * @param string[] $validPlans plan identifiers
+     * @return CouponGetResponse
      */
     public function couponCreate($type, array $typeParameters, $code, $maxUsages = 0, $maxPeriods = 0, $description = '',
         $enabled = true, $groupCoupon = false, $strictUsages = false,
         array $validEvents = [Coupon::COUPON_EVENT_SUBSCRIPTION_START, Coupon::COUPON_EVENT_SUBSCRIPTION_EXTEND],
-        \DateTime $validFrom = null, \DateTime $validTo = null) {
+        \DateTime $validFrom = null, \DateTime $validTo = null, array $validPlans = []) {
 
         $data = [
             'type' => $type,
@@ -90,10 +93,13 @@ class Client extends AbstractClient {
             'strictUsages' => $strictUsages,
             'validEvents' => $validEvents,
             'validFrom' => $validFrom ? $validFrom->format('Y-m-d H:i:s') : null,
-            'validTo' => $validTo ? $validTo->format('Y-m-d H:i:s') : null
+            'validTo' => $validTo ? $validTo->format('Y-m-d H:i:s') : null,
+            'validPlans' => $validPlans
         ];
 
         $response = $this->request('/backend/subscription/coupon/create', $data);
+
+        return CouponCreateResponse::fromResponse($response);
     }
 
     /**
@@ -102,6 +108,7 @@ class Client extends AbstractClient {
      *                            strictUsages (bool), validEvents (string[]), validFrom (\DateTime|null),
      *                            validTo (\DateTime|null)
      *
+     * @return CouponModifyResponse
      * @throws DisloException
      */
     public function couponModify($id, array $modifyFields = []) {
