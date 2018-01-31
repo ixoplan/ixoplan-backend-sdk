@@ -31,7 +31,7 @@ class CouponGetResponse {
     /**
 	 * @param array $response
 	 *
-	 * @return CouponGetResponse
+	 * @return static
 	 */
 	public static function fromResponse($response) {
 		return new static(Coupon::fromResponse($response['coupon']));
