@@ -33,7 +33,7 @@ class Client extends AbstractClient {
      *
      * @return CouponListResponse
      */
-    public function couponList($limit = 10, $offset = 0, $orderDir = \Ixolit\Dislo\Client::ORDER_DIR_DESC) {
+    public function couponList($limit = 10, $offset = 0, $orderDir = self::ORDER_DIR_ASC) {
         $data = [
 			'limit'    => $limit,
 			'offset'   => $offset,
