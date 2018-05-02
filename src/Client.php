@@ -130,7 +130,7 @@ class Client extends AbstractClient {
             }
 
             if(in_array($field, ['validFrom', 'validTo'])) {
-                if(newValue !== null && ! $newValue instanceof \DateTime) {
+                if($newValue !== null && ! $newValue instanceof \DateTime) {
                     throw new DisloException('DateTime expected');
                 }
 
