@@ -67,6 +67,9 @@ class Coupon {
     /** @var bool */
     protected $groupCoupon;
 
+    /** @var bool */
+    protected $allowMultipleUsagesPerUser;
+
     /**
      * Coupon constructor.
      *
@@ -87,10 +90,12 @@ class Coupon {
      * @param array $typeParameters
      * @param bool $groupCoupon
      * @param string[] $validPlans
+     * @param bool $allowMultipleUsagesPerUser
      */
     public function __construct($id, $code, $description, $enabled, $superseded, \DateTime $createdAt,
             \DateTime $modifiedAt, \DateTime $validFrom = null, \DateTime $validTo = null, $maxUsages,
-            $maxPeriods, $strictUsages, array $validEvents, $type, array $typeParameters, $groupCoupon, $validPlans) {
+            $maxPeriods, $strictUsages, array $validEvents, $type, array $typeParameters, $groupCoupon, $validPlans,
+            $allowMultipleUsagesPerUser) {
 
         $this->id = $id;
         $this->code = $code;
@@ -109,6 +114,7 @@ class Coupon {
         $this->typeParameters = $typeParameters;
         $this->groupCoupon = $groupCoupon;
         $this->validPlans = $validPlans;
+        $this->allowMultipleUsagesPerUser = $allowMultipleUsagesPerUser;
     }
 
     /**
@@ -384,6 +390,22 @@ class Coupon {
     }
 
     /**
+     * @return bool
+     */
+    public function getAllowMultipleUsagesPerUser() {
+        return $this->allowMultipleUsagesPerUser;
+    }
+
+    /**
+     * @param bool $allowMultipleUsagesPerUser
+     * @return Coupon
+     */
+    public function setAllowMultipleUsagesPerUser($allowMultipleUsagesPerUser) {
+        $this->allowMultipleUsagesPerUser = $allowMultipleUsagesPerUser;
+        return $this;
+    }
+
+    /**
      * @param array $response
      *
      * @return self
@@ -406,7 +428,8 @@ class Coupon {
             $response['type'],
             $response['typeParameters'],
             $response['groupCoupon'],
-            $response['validPlans']
+            $response['validPlans'],
+            $response['allowMultipleUsagesPerUser']
         );
     }
 
@@ -431,7 +454,8 @@ class Coupon {
             'type' => $this->type,
             'typeParameters' => $this->typeParameters,
             'groupCoupon' => $this->groupCoupon,
-            'validPlans' => $this->validPlans
+            'validPlans' => $this->validPlans,
+            'allowMultipleUsagesPerUser' => $this->allowMultipleUsagesPerUser
         ];
     }
 }

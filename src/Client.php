@@ -5,6 +5,7 @@ namespace Ixolit\Dislo\Backend;
 
 use Ixolit\Dislo\AbstractClient;
 use Ixolit\Dislo\Backend\Response\CouponCreateResponse;
+use Ixolit\Dislo\Backend\Response\CouponGetAggregatedUsageCountsResponse;
 use Ixolit\Dislo\Backend\Response\CouponGetResponse;
 use Ixolit\Dislo\Backend\Response\CouponListResponse;
 use Ixolit\Dislo\Backend\Response\CouponModifyResponse;
@@ -20,6 +21,11 @@ use Ixolit\Dislo\Request\RequestClient;
  * @see \Ixolit\Dislo\Client
  */
 class Client extends AbstractClient {
+    const PT_DAILY = 'daily';
+    const PT_WEEKLY = 'weekly';
+    const PT_MONTHLY = 'monthly';
+    const PT_YEARLY = 'yearly';
+
     public function __construct(RequestClient $requestClient) {
         parent::__construct($requestClient, false);
     }
@@ -79,7 +85,7 @@ class Client extends AbstractClient {
     public function couponCreate($type, array $typeParameters, $code, $maxUsages = 0, $maxPeriods = 0, $description = '',
         $enabled = true, $groupCoupon = false, $strictUsages = false,
         array $validEvents = [Coupon::COUPON_EVENT_SUBSCRIPTION_START, Coupon::COUPON_EVENT_SUBSCRIPTION_EXTEND],
-        \DateTime $validFrom = null, \DateTime $validTo = null, array $validPlans = []) {
+        \DateTime $validFrom = null, \DateTime $validTo = null, array $validPlans = [], $allowMultipleUsagesPerUser = false) {
 
         $data = [
             'type' => $type,
@@ -94,7 +100,8 @@ class Client extends AbstractClient {
             'validEvents' => $validEvents,
             'validFrom' => $validFrom ? $validFrom->format('Y-m-d H:i:s') : null,
             'validTo' => $validTo ? $validTo->format('Y-m-d H:i:s') : null,
-            'validPlans' => $validPlans
+            'validPlans' => $validPlans,
+            'allowMultipleUsagesPerUser' => $allowMultipleUsagesPerUser
         ];
 
         $response = $this->request('/backend/subscription/coupon/create', $data);
@@ -106,7 +113,8 @@ class Client extends AbstractClient {
      * @param int $id
      * @param array $modifyFields modifiable fields: maxUsages (int), description (string), enabled (bool),
      *                            strictUsages (bool), validEvents (string[]), validFrom (\DateTime|null),
-     *                            validTo (\DateTime|null)
+     *                            validTo (\DateTime|null), allowMultipleUsagesPerUser (bool), validPlans (array, only
+     *                            if the coupon had valid plans before and you can only add but not remove plans)
      *
      * @return CouponModifyResponse
      * @throws DisloException
@@ -119,7 +127,9 @@ class Client extends AbstractClient {
             'strictUsages',
             'validEvents',
             'validFrom',
-            'validTo'
+            'validTo',
+            'validPlans',
+            'allowMultipleUsagesPerUser',
         ];
 
         $data = ['id' => $id];
@@ -144,5 +154,50 @@ class Client extends AbstractClient {
         $response = $this->request('/backend/subscription/coupon/modify', $data);
 
         return CouponModifyResponse::fromResponse($response);
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function couponDelete($id) {
+        $data = [
+            'id' => $id
+        ];
+
+        $response = $this->request('/backend/subscription/coupon/delete', $data);
+
+        return isset($response['success']) ? (bool) $response['success'] : false;
+    }
+
+    /**
+     * @param int $id
+     * @param \DateTime $dateFrom only date part is used
+     * @param \DateTime $dateTo only date part is used
+     *
+     * @param string $partitionType self::PT_*
+     * @return CouponGetAggregatedUsageCountsResponse
+     * @throws DisloException
+     */
+    public function couponGetAggregatedUsageCounts($id, \DateTime $dateFrom, \DateTime $dateTo, $partitionType = self::PT_DAILY) {
+        $data = [
+            'id' => $id,
+            'dateFrom' => $dateFrom->format('Y-m-d'),
+            'dateTo' => $dateTo->format('Y-m-d'),
+            'partitionType' => $partitionType
+        ];
+
+        if($dateFrom > $dateTo) {
+            throw new DisloException('$dateTo must be greater than or equal to $dateFrom');
+        }
+
+        $validPartTypes = [self::PT_DAILY, self::PT_WEEKLY, self::PT_MONTHLY, self::PT_YEARLY];
+        if(!in_array($partitionType, $validPartTypes)) {
+            throw new DisloException('$partitionType must be one of ' . implode(', ', $validPartTypes));
+        }
+
+        $response = $this->request('backend/subscription/coupon/getAggregatedUsageCounts', $data);
+
+        return CouponGetAggregatedUsageCountsResponse::fromResponse($response);
     }
 }
