@@ -1,23 +1,23 @@
-# dislo-backend-sdk
-PHP SDK for the Dislo Backend API
+# ixoplan-backend-sdk
+PHP SDK for the Ixoplan Backend API
 
 ## Installation
 
-Simply add ixolit/dislo-backend-sdk and a provider of ixolit/dislo-sdk-http (e.g. ixolit/dislo-sdk-http-guzzle) to your composer.json, e.g:
+Simply add ixoplan/ixoplan-backend-sdk and a provider of ixoplan/ixoplan-sdk-http (e.g. ixoplan/ixoplan-sdk-http-guzzle) to your composer.json, e.g:
 
     {
         "name": "myvendor/myproject",
-        "description": "Using dislo-sdk",
+        "description": "Using ixoplan-backend-sdk",
         "require": {
-            "ixolit/dislo-backend-sdk": "*"
-            "ixolit/dislo-sdk-http-guzzle": "*"
+            "ixoplan/ixoplan-backend-sdk": "*"
+            "ixoplan/ixoplan-sdk-http-guzzle": "*"
         }
     }
 
 ## Usage
 
 ### Instantiate the Client
-The client is designed for different transport layers. It needs a RequestClient interface (e.g. HTTPRequestClient) to actually communicate with Dislo.
+The client is designed for different transport layers. It needs a RequestClient interface (e.g. HTTPRequestClient) to actually communicate with Ixoplan.
 
     use Ixolit\Dislo\Backend\Client;
     use Ixolit\Dislo\HTTP\Guzzle\GuzzleHTTPClientAdapter;

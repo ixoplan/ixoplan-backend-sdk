@@ -1,8 +1,8 @@
 {
-	"name":"ixolit/dislo-backend-sdk",
+	"name":"ixoplan/ixoplan-backend-sdk",
 	"license": "MIT",
 	"type": "library",
-	"description": "Client library for backend Dislo APIs",
+	"description": "Client library for backend Ixoplan APIs",
 	"autoload": {
 		"psr-4": {
 			"Ixolit\\Dislo\\Backend\\": "./src"
@@ -14,10 +14,10 @@
 		}
 	},
 	"require": {
-        "ixolit/dislo-sdk": "1.0.*"
+        "ixoplan/ixoplan-sdk": "1.0.*"
 	},
 	"require-dev": {
-        "ixolit/dislo-sdk-http-guzzle": "1.0.*",
+        "ixoplan/ixoplan-sdk-http-guzzle": "1.0.*",
 		"phpunit/phpunit": "4.8.*",
         "phpmd/phpmd": "2.4.*",
         "phing/phing": "2.14.*",

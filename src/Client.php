@@ -14,9 +14,9 @@ use Ixolit\Dislo\Exceptions\DisloException;
 use Ixolit\Dislo\Request\RequestClient;
 
 /**
- * The backend client class for use with the Dislo API.
+ * The backend client class for use with the Ixoplan API.
  *
- * It extends the frontend Dislo API clients and adds backend specific calls
+ * It extends the frontend Ixoplan API clients and adds backend specific calls
  *
  * @see \Ixolit\Dislo\Client
  */
