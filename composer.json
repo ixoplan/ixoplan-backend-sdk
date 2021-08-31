@@ -14,10 +14,10 @@
 		}
 	},
 	"require": {
-        "ixoplan/ixoplan-sdk": "1.0.*"
+        "ixoplan/ixoplan-sdk": "1.0.* | dev-beta"
 	},
 	"require-dev": {
-        "ixoplan/ixoplan-sdk-http-guzzle": "1.0.*",
+        "ixoplan/ixoplan-sdk-http-guzzle": "1.0.* | dev-beta",
 		"phpunit/phpunit": "4.8.*",
         "phpmd/phpmd": "2.4.*",
         "phing/phing": "2.14.*",
